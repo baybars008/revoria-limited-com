@@ -1,0 +1,847 @@
+<title>Revoria Limited</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,700;1,400&family=Carlito:wght@400;700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+<style>
+/* ── TOKENS ─────────────────────────────────────────── */
+:root {
+  --ink:     #0B0F14;
+  --ink2:    #3A4556;
+  --ink3:    #8093A8;
+  --bg:      #F5F7F9;
+  --bg2:     #ECEEF2;
+  --white:   #FFFFFF;
+  --teal:    #18A69E;
+  --teal-d:  #0F756F;
+  --gold:    #C6A262;
+  --gold-d:  #9B7A3E;
+  --navy:    #0A1A31;
+  --line:    #D8DDE5;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink:   #EFF2F5; --ink2: #9AAABB; --ink3: #546070;
+    --bg:    #0C1420; --bg2: #111D2E; --white: #142035;
+    --line:  #1E2E42;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ink:   #EFF2F5; --ink2: #9AAABB; --ink3: #546070;
+  --bg:    #0C1420; --bg2: #111D2E; --white: #142035;
+  --line:  #1E2E42;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Carlito', Calibri, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 62px;
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+  max-width: 1100px; margin: 0 auto;
+}
+.logo {
+  font-family: 'Gelasio', Cambria, serif;
+  font-size: 1.15rem; font-weight: 700;
+  display: flex; align-items: center; gap: 6px;
+}
+.logo-pip {
+  display: inline-flex;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal) 50%, var(--gold) 50%);
+}
+.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links a { font-size: .85rem; color: var(--ink2); transition: color .2s; }
+.nav-links a:hover { color: var(--ink); }
+.nav-cta {
+  background: var(--navy); color: #fff;
+  font-size: .82rem; font-weight: 700;
+  padding: 9px 20px; border-radius: 100px;
+  transition: opacity .2s;
+}
+.nav-cta:hover { opacity: .85; }
+.theme-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--bg);
+  cursor: pointer; font-size: .85rem;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink2); transition: border-color .2s;
+}
+.theme-btn:hover { border-color: var(--ink3); }
+@media (max-width: 680px) {
+  .nav-links li:not(:last-child) { display: none; }
+}
+
+/* ── HERO ────────────────────────────────────────────── */
+.hero {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+  position: relative;
+}
+.hero-left {
+  padding: 80px max(24px, env(safe-area-inset-left, 0px)) 80px max(24px, env(safe-area-inset-left, 0px));
+  max-width: 560px;
+  position: relative; z-index: 2;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  border-radius: 100px;
+  padding: 5px 14px 5px 8px;
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink2); margin-bottom: 32px;
+}
+.hero-tag-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 6px var(--teal);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; } 50% { opacity: .4; }
+}
+.hero-h1 {
+  font-family: 'Gelasio', Cambria, serif;
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -.02em;
+  text-wrap: balance;
+  margin-bottom: 24px;
+}
+.hero-h1 .teal { color: var(--teal); }
+.hero-h1 .gold { color: var(--gold); }
+.hero-sub {
+  font-size: 1rem; color: var(--ink2);
+  line-height: 1.7; max-width: 420px; margin-bottom: 40px;
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 56px; }
+.btn-primary {
+  background: var(--navy); color: #fff;
+  font-size: .88rem; font-weight: 700;
+  padding: 14px 28px; border-radius: 100px;
+  transition: transform .15s, box-shadow .15s;
+  display: inline-block;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(10,26,49,.3); }
+.btn-ghost {
+  border: 1px solid var(--line); color: var(--ink);
+  font-size: .88rem; font-weight: 700;
+  padding: 13px 28px; border-radius: 100px;
+  display: inline-block; background: var(--white);
+  transition: border-color .2s, background .2s;
+}
+.btn-ghost:hover { border-color: var(--ink3); background: var(--bg2); }
+.hero-stats {
+  display: flex; gap: 32px; flex-wrap: wrap;
+  border-top: 1px solid var(--line);
+  padding-top: 28px;
+}
+.stat-n {
+  font-family: 'Gelasio', Cambria, serif;
+  font-size: 1.8rem; font-weight: 700;
+}
+.stat-l { font-size: .75rem; color: var(--ink3); margin-top: 2px; letter-spacing: .04em; }
+.hero-canvas-wrap {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+}
+canvas#hero-canvas {
+  display: block;
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+@media (max-width: 840px) {
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-canvas-wrap { height: 360px; }
+  .hero-left { max-width: 100%; padding-bottom: 0; }
+}
+
+/* ── MARQUEE ─────────────────────────────────────────── */
+.marquee-wrap {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden; white-space: nowrap;
+  background: var(--white); padding-block: 14px;
+}
+.marquee-track {
+  display: inline-flex; gap: 40px;
+  animation: marquee 22s linear infinite;
+}
+.marquee-item {
+  font-size: .78rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink3); flex-shrink: 0;
+  display: flex; align-items: center; gap: 12px;
+}
+.marquee-sep { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── SECTION BASE ────────────────────────────────────── */
+.section { padding-block: 96px; }
+.section-label {
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 16px;
+}
+.section-h2 {
+  font-family: 'Gelasio', Cambria, serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 700; line-height: 1.15;
+  text-wrap: balance; margin-bottom: 16px;
+}
+.section-sub {
+  font-size: .95rem; color: var(--ink2);
+  line-height: 1.7; max-width: 540px;
+}
+
+/* ── TWO ARMS ────────────────────────────────────────── */
+.arms { background: var(--white); }
+.arms-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+}
+.arm {
+  padding: 56px 48px;
+  position: relative; overflow: hidden;
+}
+.arm-teal { background: var(--bg2); }
+.arm-gold  { background: var(--bg); }
+.arm::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.arm-teal::before { background: var(--teal); }
+.arm-gold::before  { background: var(--gold); }
+.arm-number {
+  font-family: 'Gelasio', Cambria, serif;
+  font-size: 5rem; font-weight: 700; line-height: 1;
+  opacity: .06; margin-bottom: -20px;
+  user-select: none;
+}
+.arm-teal .arm-number { color: var(--teal-d); }
+.arm-gold  .arm-number { color: var(--gold-d); }
+.arm-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; margin-bottom: 20px;
+}
+.arm-teal .arm-icon { background: rgba(24,166,158,.12); }
+.arm-gold  .arm-icon { background: rgba(198,162,98,.12); }
+.arm h3 {
+  font-family: 'Gelasio', Cambria, serif;
+  font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;
+}
+.arm > p { font-size: .9rem; color: var(--ink2); line-height: 1.65; margin-bottom: 28px; max-width: 380px; }
+.arm-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.arm-list li {
+  font-size: .85rem; color: var(--ink2);
+  padding-left: 18px; position: relative;
+}
+.arm-list li::before {
+  content: ''; position: absolute; left: 0; top: 8px;
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.arm-teal .arm-list li::before { background: var(--teal); }
+.arm-gold  .arm-list li::before { background: var(--gold); }
+@media (max-width: 680px) {
+  .arms-grid { grid-template-columns: 1fr; }
+  .arm { padding: 40px 24px; }
+}
+
+/* ── ARGUSLEAF ───────────────────────────────────────── */
+.argus-inner {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 64px; align-items: center;
+}
+.argus-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(24,166,158,.1); border: 1px solid rgba(24,166,158,.25);
+  border-radius: 100px; padding: 5px 14px;
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 24px;
+}
+.argus-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal); animation: pulse-dot 2s infinite;
+}
+.argus-visual {
+  background: var(--bg2); border: 1px solid var(--line);
+  border-radius: 20px; padding: 32px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.argus-stat {
+  background: var(--white); border: 1px solid var(--line);
+  border-radius: 12px; padding: 18px 20px;
+  display: flex; align-items: center; gap: 16px;
+}
+.argus-stat-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: rgba(24,166,158,.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+.argus-stat-n {
+  font-family: 'Gelasio', Cambria, serif;
+  font-size: 1.4rem; font-weight: 700; color: var(--teal);
+}
+.argus-stat-l { font-size: .78rem; color: var(--ink3); }
+@media (max-width: 760px) {
+  .argus-inner { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ── PROCESS ─────────────────────────────────────────── */
+.process { background: var(--navy); color: #fff; }
+.process .section-label { color: var(--teal); }
+.process .section-sub { color: rgba(255,255,255,.5); }
+.process-steps {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-top: 56px;
+}
+.step-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px; padding: 32px 28px;
+  position: relative; overflow: hidden;
+}
+.step-n {
+  font-family: 'Gelasio', Cambria, serif;
+  font-size: 4.5rem; font-weight: 700; line-height: 1;
+  color: rgba(255,255,255,.05);
+  position: absolute; right: 20px; top: 16px;
+  user-select: none;
+}
+.step-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(24,166,158,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; margin-bottom: 20px;
+}
+.step-card h3 {
+  font-family: 'Gelasio', Cambria, serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: #fff; margin-bottom: 10px;
+}
+.step-card p { font-size: .85rem; color: rgba(255,255,255,.5); line-height: 1.6; }
+@media (max-width: 680px) {
+  .process-steps { grid-template-columns: 1fr; }
+}
+
+/* ── PRICING ─────────────────────────────────────────── */
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 56px;
+}
+.price-card {
+  background: var(--white); border: 1px solid var(--line);
+  border-radius: 20px; padding: 32px 28px;
+  position: relative; overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+}
+.price-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.08); }
+.price-card.featured {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 1px var(--teal);
+}
+.price-card.featured::before {
+  content: 'En Popüler';
+  position: absolute; top: 20px; right: 20px;
+  background: var(--teal); color: #fff;
+  font-size: .65rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 100px;
+}
+.price-accent { height: 3px; border-radius: 2px; margin-bottom: 28px; }
+.price-name { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; }
+.price-amount {
+  font-family: 'Gelasio', Cambria, serif;
+  font-size: 2.4rem; font-weight: 700; margin-bottom: 4px;
+}
+.price-vat { font-size: .78rem; color: var(--ink3); margin-bottom: 24px; }
+.price-desc { font-size: .85rem; color: var(--ink2); line-height: 1.6; margin-bottom: 24px; border-bottom: 1px solid var(--line); padding-bottom: 24px; }
+.price-features { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-bottom: 28px; }
+.price-features li { font-size: .83rem; color: var(--ink2); padding-left: 18px; position: relative; }
+.price-features li::before {
+  content: '✓'; position: absolute; left: 0;
+  color: var(--teal); font-weight: 700; font-size: .8rem;
+}
+.price-btn {
+  display: block; text-align: center;
+  padding: 12px; border-radius: 100px;
+  font-size: .85rem; font-weight: 700;
+  transition: opacity .2s;
+}
+.price-btn:hover { opacity: .8; }
+@media (max-width: 760px) {
+  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+}
+
+/* ── CTA ─────────────────────────────────────────────── */
+.cta-section { background: var(--navy); }
+.cta-inner {
+  text-align: center;
+  padding-block: 96px;
+  max-width: 600px; margin: 0 auto;
+}
+.cta-inner h2 {
+  font-family: 'Gelasio', Cambria, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700; color: #fff;
+  text-wrap: balance; margin-bottom: 16px;
+}
+.cta-inner p { font-size: .95rem; color: rgba(255,255,255,.5); margin-bottom: 36px; line-height: 1.7; }
+.cta-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.cta-primary {
+  background: var(--teal); color: #fff;
+  font-size: .9rem; font-weight: 700;
+  padding: 14px 32px; border-radius: 100px;
+  display: inline-block; transition: background .2s;
+}
+.cta-primary:hover { background: var(--teal-d); }
+.cta-secondary {
+  border: 1px solid rgba(255,255,255,.15); color: rgba(255,255,255,.7);
+  font-size: .9rem; font-weight: 700;
+  padding: 13px 32px; border-radius: 100px;
+  display: inline-block; transition: border-color .2s, color .2s;
+}
+.cta-secondary:hover { border-color: rgba(255,255,255,.4); color: #fff; }
+
+/* ── FOOTER ──────────────────────────────────────────── */
+.footer {
+  background: #07101A;
+  padding-block: 48px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.footer-inner {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; flex-wrap: wrap; gap: 24px;
+}
+.footer-logo {
+  font-family: 'Gelasio', Cambria, serif;
+  font-size: 1.1rem; font-weight: 700; color: #fff;
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 8px;
+}
+.footer-co { font-size: .75rem; color: rgba(255,255,255,.3); line-height: 1.7; }
+.footer-links { display: flex; flex-direction: column; gap: 8px; }
+.footer-links a { font-size: .82rem; color: rgba(255,255,255,.4); transition: color .2s; }
+.footer-links a:hover { color: rgba(255,255,255,.8); }
+.footer-bottom {
+  margin-top: 40px; padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  display: flex; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+  font-size: .75rem; color: rgba(255,255,255,.25);
+}
+</style>
+
+<!-- NAV -->
+<nav class="nav" role="navigation">
+  <div class="nav-inner">
+    <a href="#top" class="logo">
+      <span class="logo-pip"></span>
+      Revoria Limited
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#argusleaf">ArgusLeaf</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#contact" class="nav-cta">Book a call</a></li>
+    </ul>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">☽</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-left wrap">
+    <div class="hero-tag">
+      <span class="hero-tag-dot"></span>
+      UK Registered · ICO Certified
+    </div>
+    <h1 class="hero-h1">
+      We <span class="teal">guard</span><br>
+      what we<br>
+      <span class="gold">grow</span>.
+    </h1>
+    <p class="hero-sub">
+      Digital büyüme ve siber güvenliği tek çatı altında birleştiren İngiltere merkezli teknoloji şirketi. KOBİ'ler için.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Ücretsiz Görüşme</a>
+      <a href="#services" class="btn-ghost">Hizmetleri Gör</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-n" style="color:var(--teal)">OWASP</div>
+        <div class="stat-l">Top 10 Kapsamı</div>
+      </div>
+      <div>
+        <div class="stat-n" style="color:var(--gold)">£1,220</div>
+        <div class="stat-l">Dijital Atılım Paketi</div>
+      </div>
+      <div>
+        <div class="stat-n">18+</div>
+        <div class="stat-l">Hizmet Kalemi</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-canvas-wrap">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Web Security<span class="marquee-sep"></span></span>
+    <span class="marquee-item">Digital Growth<span class="marquee-sep"></span></span>
+    <span class="marquee-item">Penetration Testing<span class="marquee-sep"></span></span>
+    <span class="marquee-item">Brand Identity<span class="marquee-sep"></span></span>
+    <span class="marquee-item">OWASP Top 10<span class="marquee-sep"></span></span>
+    <span class="marquee-item">Local SEO<span class="marquee-sep"></span></span>
+    <span class="marquee-item">ArgusLeaf Platform<span class="marquee-sep"></span></span>
+    <span class="marquee-item">GDPR Compliance<span class="marquee-sep"></span></span>
+    <span class="marquee-item">Web Security<span class="marquee-sep"></span></span>
+    <span class="marquee-item">Digital Growth<span class="marquee-sep"></span></span>
+    <span class="marquee-item">Penetration Testing<span class="marquee-sep"></span></span>
+    <span class="marquee-item">Brand Identity<span class="marquee-sep"></span></span>
+    <span class="marquee-item">OWASP Top 10<span class="marquee-sep"></span></span>
+    <span class="marquee-item">Local SEO<span class="marquee-sep"></span></span>
+    <span class="marquee-item">ArgusLeaf Platform<span class="marquee-sep"></span></span>
+    <span class="marquee-item">GDPR Compliance<span class="marquee-sep"></span></span>
+  </div>
+</div>
+
+<!-- TWO ARMS -->
+<section class="section arms" id="services">
+  <div class="wrap" style="margin-bottom:48px">
+    <div class="section-label">İki Kol</div>
+    <h2 class="section-h2">Bir büyütür.<br>Diğeri korur.</h2>
+    <p class="section-sub">Revoria'nın iki kolu birbirini tamamlar — dijital varlığınızı inşa ederken aynı zamanda güvence altına alırız.</p>
+  </div>
+  <div class="arms-grid">
+    <div class="arm arm-gold">
+      <div class="arm-number">01</div>
+      <div class="arm-icon">🚀</div>
+      <h3>Soft &amp; Digital Solutions</h3>
+      <p>İşletmenizin dijital kimliğini ve büyümesini tasarlıyoruz. Web sitesinden markaya, SEO'dan sosyal medyaya kadar eksiksiz kurulum.</p>
+      <ul class="arm-list">
+        <li>5 sayfalı kurumsal web sitesi (SSL, hosting dahil)</li>
+        <li>Logo, renk paleti, marka rehberi</li>
+        <li>Google İşletme + Yerel SEO</li>
+        <li>UK GDPR / KVKK yasal metinler</li>
+        <li>WhatsApp Business kurulumu</li>
+      </ul>
+    </div>
+    <div class="arm arm-teal">
+      <div class="arm-number">02</div>
+      <div class="arm-icon">🛡</div>
+      <h3>Cyber Security</h3>
+      <p>Büyüyen dijital varlığınızı koruyoruz. Sabit fiyatlı, yazılı kapsamlı sızma testleri ve güvenlik denetimleri.</p>
+      <ul class="arm-list">
+        <li>Web uygulama sızma testi (OWASP Top 10)</li>
+        <li>Dış ağ sızma testi</li>
+        <li>İç ağ sızma testi</li>
+        <li>Sosyal mühendislik simülasyonu</li>
+        <li>Her test için imzalı yetki belgesi</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ARGUSLEAF -->
+<section class="section" id="argusleaf">
+  <div class="wrap">
+    <div class="argus-inner">
+      <div>
+        <div class="argus-badge"><span class="argus-badge-dot"></span>Revoria Ürünü · Ücretsiz</div>
+        <div class="section-label">ArgusLeaf</div>
+        <h2 class="section-h2">Marka taklidi ve oltalama istihbaratı.</h2>
+        <p class="section-sub" style="margin-bottom:32px">
+          7/24 sertifika şeffaflık (CT) log izleme. Sahte domain veya oltalama girişimi tespit edildiğinde 5 dakika içinde uyarı. Revoria müşterilerine ücretsiz.
+        </p>
+        <a href="#contact" class="btn-primary">Erişim İste</a>
+      </div>
+      <div class="argus-visual">
+        <div class="argus-stat">
+          <div class="argus-stat-icon">⚡</div>
+          <div>
+            <div class="argus-stat-n">&lt;5 dk</div>
+            <div class="argus-stat-l">Uyarı gecikmesi</div>
+          </div>
+        </div>
+        <div class="argus-stat">
+          <div class="argus-stat-icon">👁</div>
+          <div>
+            <div class="argus-stat-n">7/24</div>
+            <div class="argus-stat-l">CT Log izleme</div>
+          </div>
+        </div>
+        <div class="argus-stat">
+          <div class="argus-stat-icon">🔗</div>
+          <div>
+            <div class="argus-stat-n">Otomatik</div>
+            <div class="argus-stat-l">Domain tespiti &amp; sınıflandırma</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section process" id="process">
+  <div class="wrap">
+    <div class="section-label">Nasıl Çalışır</div>
+    <h2 class="section-h2" style="color:#fff">Üç adımda başlıyoruz.</h2>
+    <p class="section-sub">Sürpriz maliyet yok, gizli kapsam yok. Her şey baştan yazılı ve imzalı.</p>
+    <div class="process-steps">
+      <div class="step-card">
+        <div class="step-n">1</div>
+        <div class="step-icon">💬</div>
+        <h3>Ücretsiz Görüşme</h3>
+        <p>20 dakika. Durumunuzu anlıyoruz ve dürüstçe söylüyoruz: uyum var mı, yok mu.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-n">2</div>
+        <div class="step-icon">📄</div>
+        <h3>Sabit Teklif</h3>
+        <p>Kapsam, süre ve fiyat — hepsi yazılı. Ek iş ancak sizin onayınızla.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-n">3</div>
+        <div class="step-icon">✅</div>
+        <h3>Teslim &amp; Destek</h3>
+        <p>Lighthouse ≥85 garantisi, 30 gün destek. Her gün gecikme %1 indirim.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="section-label">Fiyatlandırma</div>
+    <h2 class="section-h2">Net fiyat, net kapsam.</h2>
+    <p class="section-sub">Tüm fiyatlar GBP, +%20 KDV hariç.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-accent" style="background:var(--gold)"></div>
+        <div class="price-name">Dijital Atılım</div>
+        <div class="price-amount">£1,220</div>
+        <div class="price-vat">+%20 KDV · Tek seferlik</div>
+        <p class="price-desc">18 hizmet kalemi, 9 hafta. Web sitesi + marka + SEO + yasal metinler.</p>
+        <ul class="price-features">
+          <li>Kurumsal web sitesi (5 sayfa)</li>
+          <li>Marka kimliği paketi</li>
+          <li>Yerel SEO kurulumu</li>
+          <li>UK GDPR / KVKK metinleri</li>
+          <li>Kapora £305</li>
+        </ul>
+        <a href="#contact" class="price-btn" style="background:var(--bg2);border:1px solid var(--line);color:var(--ink)">Teklif Al</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-accent" style="background:var(--teal)"></div>
+        <div class="price-name">Güvenlik Denetimi</div>
+        <div class="price-amount">£2,065</div>
+        <div class="price-vat">+%20 KDV · 3–4 hafta</div>
+        <p class="price-desc">OWASP Top 10 web + dış ağ sızma testi. Bulgu raporu dahil.</p>
+        <ul class="price-features">
+          <li>Web uygulama testi</li>
+          <li>Dış ağ testi</li>
+          <li>Sosyal mühendislik sim.</li>
+          <li>Yazılı bulgu raporu</li>
+          <li>İmzalı test yetkisi</li>
+        </ul>
+        <a href="#contact" class="price-btn" style="background:var(--teal);color:#fff">Başlayalım</a>
+      </div>
+      <div class="price-card">
+        <div class="price-accent" style="background:var(--ink3)"></div>
+        <div class="price-name">Kurumsal Güvenlik</div>
+        <div class="price-amount">£4,390</div>
+        <div class="price-vat">+%20 KDV · 6–8 hafta</div>
+        <p class="price-desc">Tam kapsamlı güvenlik değerlendirmesi. İç ağ dahil, giderim rehberi dahil.</p>
+        <ul class="price-features">
+          <li>Web + dış + iç ağ testi</li>
+          <li>Tam bulgu + giderim rehberi</li>
+          <li>Yönetici özet raporu</li>
+          <li>İkinci tarama (patch sonrası)</li>
+          <li>ArgusLeaf dahil</li>
+        </ul>
+        <a href="#contact" class="price-btn" style="background:var(--bg2);border:1px solid var(--line);color:var(--ink)">Teklif Al</a>
+      </div>
+    </div>
+    <p style="font-size:.8rem;color:var(--ink3);margin-top:20px;text-align:center">
+      Dijital Atılım + Güvenlik paketi birlikte: %15 indirim
+    </p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-inner wrap">
+    <h2>20 dakika. Sürpriz yok.</h2>
+    <p>Ne istediğinizi anlatın, dürüstçe uyum var mı söyleyelim. Fiyat ve kapsam yazılı gelir.</p>
+    <div class="cta-actions">
+      <a href="mailto:info@revoria-limited.com" class="cta-primary">info@revoria-limited.com</a>
+      <a href="mailto:technical@revoria-limited.com" class="cta-secondary">technical@revoria-limited.com</a>
+    </div>
+    <p style="margin-top:24px;font-size:.78rem;color:rgba(255,255,255,.25)">
+      71–75 Shelton Street, Covent Garden, London WC2H 9JQ
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">
+          <span class="logo-pip"></span>Revoria Limited
+        </div>
+        <div class="footer-co">
+          Registered in England &amp; Wales · No. 16812254<br>
+          ICO Registration No. C1936851
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="#services">Services</a>
+        <a href="#argusleaf">ArgusLeaf</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Revoria Limited</span>
+      <span>revoria-limited.com</span>
+    </div>
+  </div>
+</footer>
+
+<!-- THREE.JS HERO -->
+<script>
+(function () {
+  var canvas = document.getElementById('hero-canvas');
+  if (!canvas || typeof THREE === 'undefined') return;
+
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.1;
+
+  var scene  = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
+  camera.position.z = 5.5;
+
+  var coreGeo = new THREE.IcosahedronGeometry(1.0, 1);
+  var core = new THREE.Mesh(coreGeo, new THREE.MeshStandardMaterial({ color: 0xB9C3CC, metalness: 0.85, roughness: 0.15 }));
+  scene.add(core);
+  var wire = new THREE.Mesh(coreGeo.clone(), new THREE.MeshBasicMaterial({ color: 0x18A69E, wireframe: true, transparent: true, opacity: 0.20 }));
+  wire.scale.setScalar(1.02); scene.add(wire);
+
+  function makeRing(r, tube, col, glow) {
+    return new THREE.Mesh(new THREE.TorusGeometry(r, tube, 8, 80),
+      new THREE.MeshStandardMaterial({ color: col, metalness: .9, roughness: .1, emissive: col, emissiveIntensity: glow }));
+  }
+  var rG = makeRing(1.9, .015, 0xC6A262, .4); rG.rotation.x = Math.PI/4;
+  var rT = makeRing(2.45, .010, 0x18A69E, .5); rT.rotation.x = Math.PI/3; rT.rotation.z = Math.PI/6;
+  var rS = makeRing(3.0, .006, 0xB9C3CC, .12); rS.rotation.x = Math.PI/2.2; rS.rotation.y = Math.PI/5;
+  scene.add(rG, rT, rS);
+
+  function makePts(n, col, spread) {
+    var geo = new THREE.BufferGeometry(), pos = new Float32Array(n*3);
+    for (var i=0;i<n;i++) {
+      var t=Math.random()*Math.PI*2, p=Math.acos(2*Math.random()-1), r2=spread*(.4+Math.random()*.6);
+      pos[i*3]=r2*Math.sin(p)*Math.cos(t); pos[i*3+1]=r2*Math.sin(p)*Math.sin(t); pos[i*3+2]=r2*Math.cos(p);
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    return new THREE.Points(geo, new THREE.PointsMaterial({color:col,size:.022,transparent:true,opacity:.5}));
+  }
+  scene.add(makePts(220,0x18A69E,4.5), makePts(150,0xC6A262,5.5), makePts(280,0xB9C3CC,6.5));
+
+  scene.add(new THREE.AmbientLight(0x1a2a4a,.5));
+  var tL=new THREE.PointLight(0x18A69E,4,9), gL=new THREE.PointLight(0xC6A262,3,7);
+  var rim=new THREE.DirectionalLight(0xffffff,.5); rim.position.set(2,4,2);
+  scene.add(tL,gL,rim);
+
+  function resize() {
+    var el=canvas.parentElement, w=el.clientWidth, h=el.clientHeight||580;
+    renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
+  }
+  resize(); window.addEventListener('resize',resize);
+
+  var mX=0,mY=0,lX=0,lY=0;
+  document.addEventListener('mousemove',function(e){mX=(e.clientX/innerWidth-.5)*2;mY=(e.clientY/innerHeight-.5)*2;});
+
+  var paused=false, reduced=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  document.addEventListener('visibilitychange',function(){paused=document.hidden;});
+
+  var clock=new THREE.Clock();
+  function tick() {
+    requestAnimationFrame(tick);
+    if(paused) return;
+    var t=clock.getElapsedTime();
+    if(!reduced){
+      core.rotation.y=t*.14; core.rotation.x=Math.sin(t*.09)*.18; wire.rotation.copy(core.rotation);
+      rG.rotation.y=t*.28; rT.rotation.z=-t*.18; rT.rotation.y=t*.07;
+      rS.rotation.x+=.0009; rS.rotation.z+=.0006;
+      tL.position.set(Math.sin(t*.4)*2.8, Math.cos(t*.3)*1.8, Math.cos(t*.4)*2.8);
+      gL.position.set(Math.cos(t*.5)*3.2, Math.sin(t*.4)*1.4, Math.sin(t*.5)*3.2);
+      lX+=(mX-lX)*.05; lY+=(mY-lY)*.05;
+      camera.position.x=lX*.7; camera.position.y=-lY*.4; camera.lookAt(0,0,0);
+    }
+    renderer.render(scene,camera);
+  }
+  tick();
+})();
+
+/* THEME TOGGLE */
+(function(){
+  var btn=document.getElementById('themeBtn');
+  var dark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  function apply(d){ document.documentElement.setAttribute('data-theme',d?'dark':'light'); btn.textContent=d?'☀':'☽'; }
+  apply(dark);
+  btn.addEventListener('click',function(){ dark=!dark; apply(dark); });
+})();
+</script>
